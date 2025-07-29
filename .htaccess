@@ -15,19 +15,23 @@ php_flag display_errors off
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteRule ^includes/ - [F,L]
+    
+    # 정적 파일 리다이렉션 설정
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^css/(.*)$ /css/$1 [L]
+    RewriteRule ^js/(.*)$ /js/$1 [L]
+    RewriteRule ^images/(.*)$ /images/$1 [L]
 </IfModule>
 
-# PHP 파일 직접 접근 차단 (AJAX 요청만 허용)
-<FilesMatch "\.(php)$">
+# 정적 파일 접근 허용
+<FilesMatch "\.(html|css|js|jpg|jpeg|png|gif|ico|svg|woff|woff2|ttf|eot)$">
     Order Allow,Deny
-    Deny from all
-    <If "%{HTTP:X-Requested-With} == 'XMLHttpRequest'">
-        Allow from all
-    </If>
+    Allow from all
 </FilesMatch>
 
-# HTML 파일은 허용
-<FilesMatch "\.(html|css|js|jpg|jpeg|png|gif|ico)$">
+# API 요청 처리
+<FilesMatch "^(process-login|check-session|dashboard)\.php$">
     Order Allow,Deny
     Allow from all
 </FilesMatch>

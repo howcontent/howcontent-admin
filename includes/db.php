@@ -3,7 +3,7 @@
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'howcontent_admin');
 define('DB_USER', 'root');
-define('DB_PASS', '');
+define('DB_PASS', ''); // MySQL Workbench에서 설정한 root 비밀번호로 변경해주세요
 define('DB_CHARSET', 'utf8mb4');
 
 // PDO 옵션
