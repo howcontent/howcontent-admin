@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>마이페이지 - HowContent Admin</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <!-- 헤더 영역 -->
+    <header class="header">
+        <nav class="nav-container">
+            <div class="logo">
+                <a href="/">HowContent Admin</a>
+            </div>
+            <div class="nav-links">
+                <a href="/estimate/request.html">견적 요청</a>
+                <div class="user-menu">
+                    <button class="user-menu-button">
+                        <i class="fas fa-user"></i>
+                        <span class="user-name">사용자</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="user-menu-dropdown">
+                        <a href="/user/profile.html">프로필 설정</a>
+                        <a href="#" id="logoutButton">로그아웃</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- 메인 콘텐츠 -->
+    <main class="dashboard">
+        <div class="dashboard-container">
+            <!-- 사이드바 -->
+            <aside class="dashboard-sidebar">
+                <nav class="sidebar-nav">
+                    <ul>
+                        <li class="active">
+                            <a href="/user/index.html">
+                                <i class="fas fa-home"></i>
+                                <span>대시보드</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/user/estimates.html">
+                                <i class="fas fa-file-invoice"></i>
+                                <span>견적 요청 내역</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/user/tasks.html">
+                                <i class="fas fa-tasks"></i>
+                                <span>작업 현황</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/user/notifications.html">
+                                <i class="fas fa-bell"></i>
+                                <span>알림</span>
+                                <span class="badge" id="notificationCount">0</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <!-- 메인 콘텐츠 영역 -->
+            <div class="dashboard-content">
+                <!-- 상단 요약 정보 -->
+                <div class="dashboard-summary">
+                    <div class="summary-card">
+                        <div class="summary-icon">
+                            <i class="fas fa-file-invoice"></i>
+                        </div>
+                        <div class="summary-info">
+                            <h3>견적 요청</h3>
+                            <p class="summary-count" id="estimateCount">0</p>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-icon">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <div class="summary-info">
+                            <h3>진행중인 작업</h3>
+                            <p class="summary-count" id="activeTaskCount">0</p>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="summary-info">
+                            <h3>완료된 작업</h3>
+                            <p class="summary-count" id="completedTaskCount">0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 최근 견적 요청 -->
+                <section class="dashboard-section">
+                    <div class="section-header">
+                        <h2>최근 견적 요청</h2>
+                        <a href="/user/estimates.html" class="btn btn-secondary">전체보기</a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="dashboard-table" id="recentEstimates">
+                            <thead>
+                                <tr>
+                                    <th>견적 코드</th>
+                                    <th>작업 종류</th>
+                                    <th>요청일</th>
+                                    <th>상태</th>
+                                    <th>작업</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- JavaScript로 동적 생성 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- 진행중인 작업 -->
+                <section class="dashboard-section">
+                    <div class="section-header">
+                        <h2>진행중인 작업</h2>
+                        <a href="/user/tasks.html" class="btn btn-secondary">전체보기</a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="dashboard-table" id="activeTasks">
+                            <thead>
+                                <tr>
+                                    <th>작업명</th>
+                                    <th>담당자</th>
+                                    <th>시작일</th>
+                                    <th>상태</th>
+                                    <th>작업</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- JavaScript로 동적 생성 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- 최근 알림 -->
+                <section class="dashboard-section">
+                    <div class="section-header">
+                        <h2>최근 알림</h2>
+                        <a href="/user/notifications.html" class="btn btn-secondary">전체보기</a>
+                    </div>
+                    <div class="notification-list" id="recentNotifications">
+                        <!-- JavaScript로 동적 생성 -->
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- 푸터 -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>HowContent Admin</h3>
+                <p>쇼핑몰 운영 전문가 그룹</p>
+            </div>
+            <div class="footer-section">
+                <h3>연락처</h3>
+                <p>이메일: contact@howcontent.com</p>
+                <p>전화: 02-1234-5678</p>
+            </div>
+            <div class="footer-section">
+                <h3>바로가기</h3>
+                <a href="/estimate/request.html">견적 요청</a>
+                <a href="/login.html">로그인</a>
+                <a href="/admin">관리자</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 HowContent Admin. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 세션 체크
+            checkSession();
+            
+            // 사용자 메뉴 토글
+            const userMenuButton = document.querySelector('.user-menu-button');
+            const userMenuDropdown = document.querySelector('.user-menu-dropdown');
+            
+            userMenuButton.addEventListener('click', () => {
+                userMenuDropdown.classList.toggle('active');
+            });
+            
+            // 로그아웃 처리
+            document.getElementById('logoutButton').addEventListener('click', async (e) => {
+                e.preventDefault();
+                
+                try {
+                    const response = await fetchData('/api/auth/logout.php', {
+                        method: 'POST'
+                    });
+                    
+                    if (response.success) {
+                        window.location.href = '/login.html';
+                    }
+                } catch (error) {
+                    showToast('로그아웃 처리 중 오류가 발생했습니다.', 'error');
+                }
+            });
+            
+            // 대시보드 데이터 로드
+            loadDashboardData();
+        });
+
+        // 세션 체크
+        async function checkSession() {
+            try {
+                const response = await fetchData('/api/auth/check-session.php');
+                
+                if (!response.success) {
+                    window.location.href = '/login.html';
+                    return;
+                }
+                
+                // 사용자 정보 표시
+                document.querySelector('.user-name').textContent = response.user.name;
+                
+            } catch (error) {
+                window.location.href = '/login.html';
+            }
+        }
+
+        // 대시보드 데이터 로드
+        async function loadDashboardData() {
+            try {
+                const response = await fetchData('/api/user/dashboard.php');
+                
+                if (response.success) {
+                    // 요약 정보 업데이트
+                    document.getElementById('estimateCount').textContent = response.summary.estimate_count;
+                    document.getElementById('activeTaskCount').textContent = response.summary.active_task_count;
+                    document.getElementById('completedTaskCount').textContent = response.summary.completed_task_count;
+                    document.getElementById('notificationCount').textContent = response.summary.unread_notification_count;
+                    
+                    // 최근 견적 요청 목록 업데이트
+                    const recentEstimatesBody = document.querySelector('#recentEstimates tbody');
+                    recentEstimatesBody.innerHTML = response.recent_estimates.map(estimate => `
+                        <tr>
+                            <td>${estimate.code}</td>
+                            <td>${estimate.work_type}</td>
+                            <td>${formatDate(estimate.created_at)}</td>
+                            <td><span class="status-badge ${estimate.status}">${getStatusText(estimate.status)}</span></td>
+                            <td>
+                                <a href="/user/estimate-detail.html?code=${estimate.code}" class="btn btn-sm btn-primary">상세보기</a>
+                            </td>
+                        </tr>
+                    `).join('');
+                    
+                    // 진행중인 작업 목록 업데이트
+                    const activeTasksBody = document.querySelector('#activeTasks tbody');
+                    activeTasksBody.innerHTML = response.active_tasks.map(task => `
+                        <tr>
+                            <td>${task.title}</td>
+                            <td>${task.assigned_to_name}</td>
+                            <td>${formatDate(task.created_at)}</td>
+                            <td><span class="status-badge ${task.status}">${getStatusText(task.status)}</span></td>
+                            <td>
+                                <a href="/user/task-detail.html?id=${task.id}" class="btn btn-sm btn-primary">상세보기</a>
+                            </td>
+                        </tr>
+                    `).join('');
+                    
+                    // 최근 알림 목록 업데이트
+                    const recentNotifications = document.getElementById('recentNotifications');
+                    recentNotifications.innerHTML = response.recent_notifications.map(notification => `
+                        <div class="notification-item ${notification.is_read ? '' : 'unread'}">
+                            <div class="notification-icon">
+                                <i class="fas ${getNotificationIcon(notification.type)}"></i>
+                            </div>
+                            <div class="notification-content">
+                                <p>${notification.content}</p>
+                                <small>${formatDate(notification.created_at)}</small>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            } catch (error) {
+                showToast('데이터 로드 중 오류가 발생했습니다.', 'error');
+            }
+        }
+
+        // 날짜 포맷 함수
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('ko-KR', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        // 상태 텍스트 변환 함수
+        function getStatusText(status) {
+            const statusMap = {
+                'requested': '요청됨',
+                'in_progress': '진행중',
+                'feedback': '피드백중',
+                'completed': '완료',
+                'pending': '대기중',
+                'review': '검토중'
+            };
+            return statusMap[status] || status;
+        }
+
+        // 알림 아이콘 선택 함수
+        function getNotificationIcon(type) {
+            const iconMap = {
+                'task_assigned': 'fa-tasks',
+                'status_changed': 'fa-sync-alt',
+                'comment_added': 'fa-comment'
+            };
+            return iconMap[type] || 'fa-bell';
+        }
+    </script>
+</body>
+</html> 

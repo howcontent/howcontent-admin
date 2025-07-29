@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>견적 상세 - HowContent Admin</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <!-- 헤더 영역 -->
+    <header class="header">
+        <nav class="nav-container">
+            <div class="logo">
+                <a href="/">HowContent Admin</a>
+            </div>
+            <div class="nav-links">
+                <a href="/estimate/request.html">견적 요청</a>
+                <div class="user-menu">
+                    <button class="user-menu-button">
+                        <i class="fas fa-user"></i>
+                        <span class="user-name">사용자</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="user-menu-dropdown">
+                        <a href="/user/profile.html">프로필 설정</a>
+                        <a href="#" id="logoutButton">로그아웃</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- 메인 콘텐츠 -->
+    <main class="dashboard">
+        <div class="dashboard-container">
+            <!-- 사이드바 -->
+            <aside class="dashboard-sidebar">
+                <nav class="sidebar-nav">
+                    <ul>
+                        <li>
+                            <a href="/user/index.html">
+                                <i class="fas fa-home"></i>
+                                <span>대시보드</span>
+                            </a>
+                        </li>
+                        <li class="active">
+                            <a href="/user/estimates.html">
+                                <i class="fas fa-file-invoice"></i>
+                                <span>견적 요청 내역</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/user/tasks.html">
+                                <i class="fas fa-tasks"></i>
+                                <span>작업 현황</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/user/notifications.html">
+                                <i class="fas fa-bell"></i>
+                                <span>알림</span>
+                                <span class="badge" id="notificationCount">0</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <!-- 메인 콘텐츠 영역 -->
+            <div class="dashboard-content">
+                <!-- 견적 정보 -->
+                <div class="dashboard-section">
+                    <div class="section-header">
+                        <h2>견적 정보</h2>
+                        <div class="header-actions">
+                            <button type="button" class="btn btn-secondary" id="downloadPdfButton">
+                                <i class="fas fa-download"></i>
+                                PDF 다운로드
+                            </button>
+                        </div>
+                    </div>
+                    <div class="estimate-info">
+                        <div class="info-row">
+                            <div class="info-item">
+                                <label>견적 코드</label>
+                                <p id="estimateCode"></p>
+                            </div>
+                            <div class="info-item">
+                                <label>상태</label>
+                                <p><span id="estimateStatus" class="status-badge"></span></p>
+                            </div>
+                            <div class="info-item">
+                                <label>요청일</label>
+                                <p id="estimateCreatedAt"></p>
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-item">
+                                <label>작업 종류</label>
+                                <p id="estimateWorkType"></p>
+                            </div>
+                            <div class="info-item">
+                                <label>예산</label>
+                                <p id="estimateBudget"></p>
+                            </div>
+                            <div class="info-item">
+                                <label>마감일</label>
+                                <p id="estimateDeadline"></p>
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-item full-width">
+                                <label>디자인 필요 여부</label>
+                                <p id="estimateNeedsDesign"></p>
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-item full-width">
+                                <label>참고 URL</label>
+                                <p id="estimateReferenceUrl"></p>
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <div class="info-item full-width">
+                                <label>요구사항</label>
+                                <p id="estimateRequirements"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 작업 목록 -->
+                <div class="dashboard-section">
+                    <h2>작업 목록</h2>
+                    <div class="task-list" id="taskList">
+                        <!-- JavaScript로 동적 생성 -->
+                    </div>
+                </div>
+
+                <!-- 댓글 -->
+                <div class="dashboard-section">
+                    <h2>댓글</h2>
+                    <div class="comment-list" id="commentList">
+                        <!-- JavaScript로 동적 생성 -->
+                    </div>
+                    <form id="commentForm" class="comment-form">
+                        <div class="form-group">
+                            <textarea name="content" class="form-control" rows="3" placeholder="댓글을 입력하세요..." required></textarea>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">댓글 작성</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 푸터 -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>HowContent Admin</h3>
+                <p>쇼핑몰 운영 전문가 그룹</p>
+            </div>
+            <div class="footer-section">
+                <h3>연락처</h3>
+                <p>이메일: contact@howcontent.com</p>
+                <p>전화: 02-1234-5678</p>
+            </div>
+            <div class="footer-section">
+                <h3>바로가기</h3>
+                <a href="/estimate/request.html">견적 요청</a>
+                <a href="/login.html">로그인</a>
+                <a href="/admin">관리자</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 HowContent Admin. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="/js/main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 세션 체크
+            checkSession();
+            
+            // 사용자 메뉴 토글
+            const userMenuButton = document.querySelector('.user-menu-button');
+            const userMenuDropdown = document.querySelector('.user-menu-dropdown');
+            
+            userMenuButton.addEventListener('click', () => {
+                userMenuDropdown.classList.toggle('active');
+            });
+            
+            // 로그아웃 처리
+            document.getElementById('logoutButton').addEventListener('click', async (e) => {
+                e.preventDefault();
+                
+                try {
+                    const response = await fetchData('/api/auth/logout.php', {
+                        method: 'POST'
+                    });
+                    
+                    if (response.success) {
+                        window.location.href = '/login.html';
+                    }
+                } catch (error) {
+                    showToast('로그아웃 처리 중 오류가 발생했습니다.', 'error');
+                }
+            });
+            
+            // URL에서 견적 코드 가져오기
+            const urlParams = new URLSearchParams(window.location.search);
+            const estimateCode = urlParams.get('code');
+            
+            if (!estimateCode) {
+                window.location.href = '/user/estimates.html';
+                return;
+            }
+            
+            // 견적 정보 로드
+            loadEstimateDetail(estimateCode);
+            
+            // 댓글 폼 제출
+            document.getElementById('commentForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                if (validateForm(this)) {
+                    try {
+                        const formData = new FormData(this);
+                        formData.append('estimate_code', estimateCode);
+                        
+                        const response = await fetchData('/api/user/add-comment.php', {
+                            method: 'POST',
+                            body: formData
+                        });
+                        
+                        if (response.success) {
+                            showToast('댓글이 등록되었습니다.', 'success');
+                            this.reset();
+                            loadComments(estimateCode);
+                        } else {
+                            showToast(response.message || '댓글 등록 중 오류가 발생했습니다.', 'error');
+                        }
+                    } catch (error) {
+                        showToast('서버 오류가 발생했습니다.', 'error');
+                    }
+                }
+            });
+            
+            // PDF 다운로드
+            document.getElementById('downloadPdfButton').addEventListener('click', async () => {
+                try {
+                    const response = await fetchData('/api/user/generate-estimate-pdf.php', {
+                        method: 'GET',
+                        params: {
+                            code: estimateCode
+                        }
+                    });
+                    
+                    if (response.success) {
+                        const link = document.createElement('a');
+                        link.href = response.pdf_url;
+                        link.download = `견적서_${estimateCode}.pdf`;
+                        link.click();
+                    } else {
+                        showToast(response.message || 'PDF 생성 중 오류가 발생했습니다.', 'error');
+                    }
+                } catch (error) {
+                    showToast('서버 오류가 발생했습니다.', 'error');
+                }
+            });
+        });
+
+        // 견적 상세 정보 로드
+        async function loadEstimateDetail(code) {
+            try {
+                const response = await fetchData('/api/user/estimate-detail.php', {
+                    method: 'GET',
+                    params: {
+                        code: code
+                    }
+                });
+                
+                if (response.success) {
+                    const estimate = response.estimate;
+                    
+                    // 견적 정보 표시
+                    document.getElementById('estimateCode').textContent = estimate.code;
+                    document.getElementById('estimateStatus').textContent = getStatusText(estimate.status);
+                    document.getElementById('estimateStatus').className = `status-badge ${estimate.status}`;
+                    document.getElementById('estimateCreatedAt').textContent = formatDate(estimate.created_at);
+                    document.getElementById('estimateWorkType').textContent = estimate.work_type;
+                    document.getElementById('estimateBudget').textContent = formatCurrency(estimate.budget);
+                    document.getElementById('estimateDeadline').textContent = formatDate(estimate.deadline);
+                    document.getElementById('estimateNeedsDesign').textContent = estimate.needs_design ? '필요' : '불필요';
+                    document.getElementById('estimateReferenceUrl').innerHTML = estimate.reference_url ? 
+                        `<a href="${estimate.reference_url}" target="_blank">${estimate.reference_url}</a>` : 
+                        '없음';
+                    document.getElementById('estimateRequirements').textContent = estimate.requirements || '없음';
+                    
+                    // 작업 목록 표시
+                    const taskList = document.getElementById('taskList');
+                    taskList.innerHTML = response.tasks.map(task => `
+                        <div class="task-item">
+                            <div class="task-header">
+                                <h3>${task.title}</h3>
+                                <span class="status-badge ${task.status}">${getStatusText(task.status)}</span>
+                            </div>
+                            <div class="task-info">
+                                <p><strong>담당자:</strong> ${task.assigned_to_name || '미배정'}</p>
+                                <p>${task.description || '설명 없음'}</p>
+                            </div>
+                        </div>
+                    `).join('') || '<p class="no-data">등록된 작업이 없습니다.</p>';
+                    
+                    // 댓글 목록 표시
+                    loadComments(code);
+                }
+            } catch (error) {
+                showToast('견적 정보를 불러오는 중 오류가 발생했습니다.', 'error');
+            }
+        }
+
+        // 댓글 목록 로드
+        async function loadComments(code) {
+            try {
+                const response = await fetchData('/api/user/comments.php', {
+                    method: 'GET',
+                    params: {
+                        estimate_code: code
+                    }
+                });
+                
+                if (response.success) {
+                    const commentList = document.getElementById('commentList');
+                    commentList.innerHTML = response.comments.map(comment => `
+                        <div class="comment-item">
+                            <div class="comment-header">
+                                <span class="comment-author">${comment.user_name}</span>
+                                <span class="comment-date">${formatDate(comment.created_at)}</span>
+                            </div>
+                            <div class="comment-content">
+                                <p>${comment.content}</p>
+                            </div>
+                        </div>
+                    `).join('') || '<p class="no-data">등록된 댓글이 없습니다.</p>';
+                }
+            } catch (error) {
+                showToast('댓글을 불러오는 중 오류가 발생했습니다.', 'error');
+            }
+        }
+
+        // 통화 포맷 함수
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('ko-KR', {
+                style: 'currency',
+                currency: 'KRW'
+            }).format(amount);
+        }
+
+        // 날짜 포맷 함수
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('ko-KR', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        // 상태 텍스트 변환 함수
+        function getStatusText(status) {
+            const statusMap = {
+                'requested': '요청됨',
+                'in_progress': '진행중',
+                'feedback': '피드백중',
+                'completed': '완료',
+                'pending': '대기중',
+                'review': '검토중'
+            };
+            return statusMap[status] || status;
+        }
+    </script>
+</body>
+</html> 

@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>견적 요청 내역 - HowContent Admin</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <!-- 헤더 영역 -->
+    <header class="header">
+        <nav class="nav-container">
+            <div class="logo">
+                <a href="/">HowContent Admin</a>
+            </div>
+            <div class="nav-links">
+                <a href="/estimate/request.html">견적 요청</a>
+                <div class="user-menu">
+                    <button class="user-menu-button">
+                        <i class="fas fa-user"></i>
+                        <span class="user-name">사용자</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="user-menu-dropdown">
+                        <a href="/user/profile.html">프로필 설정</a>
+                        <a href="#" id="logoutButton">로그아웃</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- 메인 콘텐츠 -->
+    <main class="dashboard">
+        <div class="dashboard-container">
+            <!-- 사이드바 -->
+            <aside class="dashboard-sidebar">
+                <nav class="sidebar-nav">
+                    <ul>
+                        <li>
+                            <a href="/user/index.html">
+                                <i class="fas fa-home"></i>
+                                <span>대시보드</span>
+                            </a>
+                        </li>
+                        <li class="active">
+                            <a href="/user/estimates.html">
+                                <i class="fas fa-file-invoice"></i>
+                                <span>견적 요청 내역</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/user/tasks.html">
+                                <i class="fas fa-tasks"></i>
+                                <span>작업 현황</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/user/notifications.html">
+                                <i class="fas fa-bell"></i>
+                                <span>알림</span>
+                                <span class="badge" id="notificationCount">0</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </aside>
+
+            <!-- 메인 콘텐츠 영역 -->
+            <div class="dashboard-content">
+                <!-- 검색 및 필터 -->
+                <div class="dashboard-section">
+                    <div class="filter-container">
+                        <div class="search-box">
+                            <input type="text" id="searchInput" class="form-control" placeholder="견적 코드 또는 작업 종류 검색">
+                            <button type="button" class="btn btn-primary" id="searchButton">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        <div class="filter-box">
+                            <select id="statusFilter" class="form-control">
+                                <option value="">모든 상태</option>
+                                <option value="requested">요청됨</option>
+                                <option value="in_progress">진행중</option>
+                                <option value="feedback">피드백중</option>
+                                <option value="completed">완료</option>
+                            </select>
+                            <select id="dateFilter" class="form-control">
+                                <option value="">전체 기간</option>
+                                <option value="7">최근 7일</option>
+                                <option value="30">최근 30일</option>
+                                <option value="90">최근 90일</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 견적 요청 목록 -->
+                <div class="dashboard-section">
+                    <div class="table-responsive">
+                        <table class="dashboard-table" id="estimatesTable">
+                            <thead>
+                                <tr>
+                                    <th>견적 코드</th>
+                                    <th>작업 종류</th>
+                                    <th>예산</th>
+                                    <th>마감일</th>
+                                    <th>요청일</th>
+                                    <th>상태</th>
+                                    <th>작업</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- JavaScript로 동적 생성 -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- 페이지네이션 -->
+                    <div class="pagination" id="pagination">
+                        <!-- JavaScript로 동적 생성 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 푸터 -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>HowContent Admin</h3>
+                <p>쇼핑몰 운영 전문가 그룹</p>
+            </div>
+            <div class="footer-section">
+                <h3>연락처</h3>
+                <p>이메일: contact@howcontent.com</p>
+                <p>전화: 02-1234-5678</p>
+            </div>
+            <div class="footer-section">
+                <h3>바로가기</h3>
+                <a href="/estimate/request.html">견적 요청</a>
+                <a href="/login.html">로그인</a>
+                <a href="/admin">관리자</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 HowContent Admin. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 세션 체크
+            checkSession();
+            
+            // 사용자 메뉴 토글
+            const userMenuButton = document.querySelector('.user-menu-button');
+            const userMenuDropdown = document.querySelector('.user-menu-dropdown');
+            
+            userMenuButton.addEventListener('click', () => {
+                userMenuDropdown.classList.toggle('active');
+            });
+            
+            // 로그아웃 처리
+            document.getElementById('logoutButton').addEventListener('click', async (e) => {
+                e.preventDefault();
+                
+                try {
+                    const response = await fetchData('/api/auth/logout.php', {
+                        method: 'POST'
+                    });
+                    
+                    if (response.success) {
+                        window.location.href = '/login.html';
+                    }
+                } catch (error) {
+                    showToast('로그아웃 처리 중 오류가 발생했습니다.', 'error');
+                }
+            });
+            
+            // 검색 및 필터 이벤트 처리
+            const searchInput = document.getElementById('searchInput');
+            const searchButton = document.getElementById('searchButton');
+            const statusFilter = document.getElementById('statusFilter');
+            const dateFilter = document.getElementById('dateFilter');
+            
+            let currentPage = 1;
+            let searchTimeout;
+            
+            // 검색어 입력 시 자동 검색 (디바운스 처리)
+            searchInput.addEventListener('input', () => {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    currentPage = 1;
+                    loadEstimates();
+                }, 500);
+            });
+            
+            // 검색 버튼 클릭
+            searchButton.addEventListener('click', () => {
+                currentPage = 1;
+                loadEstimates();
+            });
+            
+            // 필터 변경
+            statusFilter.addEventListener('change', () => {
+                currentPage = 1;
+                loadEstimates();
+            });
+            
+            dateFilter.addEventListener('change', () => {
+                currentPage = 1;
+                loadEstimates();
+            });
+            
+            // 견적 목록 로드
+            loadEstimates();
+            
+            // 페이지 이동 처리
+            document.getElementById('pagination').addEventListener('click', (e) => {
+                if (e.target.matches('.page-link')) {
+                    e.preventDefault();
+                    const page = parseInt(e.target.dataset.page);
+                    if (page && page !== currentPage) {
+                        currentPage = page;
+                        loadEstimates();
+                    }
+                }
+            });
+        });
+
+        // 견적 목록 로드 함수
+        async function loadEstimates() {
+            try {
+                const searchQuery = document.getElementById('searchInput').value;
+                const status = document.getElementById('statusFilter').value;
+                const dateRange = document.getElementById('dateFilter').value;
+                
+                const response = await fetchData('/api/user/estimates.php', {
+                    method: 'GET',
+                    params: {
+                        page: currentPage,
+                        search: searchQuery,
+                        status: status,
+                        date_range: dateRange
+                    }
+                });
+                
+                if (response.success) {
+                    // 테이블 업데이트
+                    const tbody = document.querySelector('#estimatesTable tbody');
+                    tbody.innerHTML = response.estimates.map(estimate => `
+                        <tr>
+                            <td>${estimate.code}</td>
+                            <td>${estimate.work_type}</td>
+                            <td>${formatCurrency(estimate.budget)}</td>
+                            <td>${formatDate(estimate.deadline)}</td>
+                            <td>${formatDate(estimate.created_at)}</td>
+                            <td><span class="status-badge ${estimate.status}">${getStatusText(estimate.status)}</span></td>
+                            <td>
+                                <a href="/user/estimate-detail.html?code=${estimate.code}" class="btn btn-sm btn-primary">상세보기</a>
+                            </td>
+                        </tr>
+                    `).join('');
+                    
+                    // 페이지네이션 업데이트
+                    const pagination = document.getElementById('pagination');
+                    pagination.innerHTML = generatePagination(response.current_page, response.total_pages);
+                }
+            } catch (error) {
+                showToast('견적 목록을 불러오는 중 오류가 발생했습니다.', 'error');
+            }
+        }
+
+        // 통화 포맷 함수
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('ko-KR', {
+                style: 'currency',
+                currency: 'KRW'
+            }).format(amount);
+        }
+
+        // 날짜 포맷 함수
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('ko-KR', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        // 상태 텍스트 변환 함수
+        function getStatusText(status) {
+            const statusMap = {
+                'requested': '요청됨',
+                'in_progress': '진행중',
+                'feedback': '피드백중',
+                'completed': '완료'
+            };
+            return statusMap[status] || status;
+        }
+
+        // 페이지네이션 HTML 생성 함수
+        function generatePagination(currentPage, totalPages) {
+            let html = '<ul class="pagination-list">';
+            
+            // 이전 페이지
+            if (currentPage > 1) {
+                html += `<li><a href="#" class="page-link" data-page="${currentPage - 1}">이전</a></li>`;
+            }
+            
+            // 페이지 번호
+            for (let i = 1; i <= totalPages; i++) {
+                if (
+                    i === 1 || // 첫 페이지
+                    i === totalPages || // 마지막 페이지
+                    (i >= currentPage - 2 && i <= currentPage + 2) // 현재 페이지 전후 2페이지
+                ) {
+                    html += `<li><a href="#" class="page-link ${i === currentPage ? 'active' : ''}" data-page="${i}">${i}</a></li>`;
+                } else if (
+                    i === currentPage - 3 || // 현재 페이지 이전의 건너뛰기
+                    i === currentPage + 3 // 현재 페이지 이후의 건너뛰기
+                ) {
+                    html += '<li><span class="page-ellipsis">...</span></li>';
+                }
+            }
+            
+            // 다음 페이지
+            if (currentPage < totalPages) {
+                html += `<li><a href="#" class="page-link" data-page="${currentPage + 1}">다음</a></li>`;
+            }
+            
+            html += '</ul>';
+            return html;
+        }
+    </script>
+</body>
+</html> 

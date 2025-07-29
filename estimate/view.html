@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>견적서 확인 - HowContent Admin</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/estimate.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="/js/main.js" defer></script>
+    <script src="/js/estimate-view.js" defer></script>
+</head>
+<body>
+    <header class="main-header">
+        <nav class="nav-container">
+            <div class="logo">
+                <a href="/">HowContent Admin</a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="/">홈</a></li>
+                <li><a href="/login.html">로그인</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="estimate-container">
+        <section class="estimate-view-section">
+            <div id="estimateContent">
+                <div class="estimate-header">
+                    <h1>견적서</h1>
+                    <div class="estimate-info">
+                        <p>견적 번호: <span id="estimateCode"></span></p>
+                        <p>요청일: <span id="requestDate"></span></p>
+                    </div>
+                </div>
+
+                <div class="estimate-details">
+                    <div class="detail-group">
+                        <h2>고객 정보</h2>
+                        <div class="detail-row">
+                            <div class="detail-item">
+                                <label>이름</label>
+                                <p id="customerName"></p>
+                            </div>
+                            <div class="detail-item">
+                                <label>회사명</label>
+                                <p id="companyName"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="detail-group">
+                        <h2>작업 정보</h2>
+                        <div class="detail-row">
+                            <div class="detail-item">
+                                <label>작업 종류</label>
+                                <p id="workType"></p>
+                            </div>
+                            <div class="detail-item">
+                                <label>예산</label>
+                                <p id="budget"></p>
+                            </div>
+                            <div class="detail-item">
+                                <label>마감일</label>
+                                <p id="deadline"></p>
+                            </div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-item full-width">
+                                <label>작업 내용</label>
+                                <p id="requirements"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="detail-group">
+                        <h2>견적 금액</h2>
+                        <div class="price-table">
+                            <div class="price-row">
+                                <span>기본 작업비</span>
+                                <span id="basePrice"></span>
+                            </div>
+                            <div class="price-row">
+                                <span>디자인 비용</span>
+                                <span id="designPrice"></span>
+                            </div>
+                            <div class="price-row">
+                                <span>추가 옵션</span>
+                                <span id="optionPrice"></span>
+                            </div>
+                            <div class="price-row total">
+                                <span>총 견적 금액</span>
+                                <span id="totalPrice"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="detail-group">
+                        <h2>특이사항</h2>
+                        <p id="notes"></p>
+                    </div>
+                </div>
+
+                <div class="estimate-footer">
+                    <p>본 견적서의 유효기간은 발행일로부터 7일입니다.</p>
+                    <p>문의사항은 02-1234-5678 또는 contact@howcontent.com으로 연락주시기 바랍니다.</p>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button id="downloadPdf" class="action-button">PDF 다운로드</button>
+                <button id="requestModification" class="action-button secondary">수정 요청</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-info">
+                <h3>HowContent Admin</h3>
+                <p>사업자등록번호: 123-45-67890</p>
+                <p>연락처: 02-1234-5678</p>
+                <p>이메일: contact@howcontent.com</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 수정 요청 모달 -->
+    <div id="modificationModal" class="modal">
+        <div class="modal-content">
+            <h2>수정 요청</h2>
+            <form id="modificationForm">
+                <div class="form-group">
+                    <label for="modificationDetails">수정 요청 사항</label>
+                    <textarea id="modificationDetails" name="modificationDetails" required></textarea>
+                </div>
+                <div class="modal-buttons">
+                    <button type="submit" class="action-button">요청하기</button>
+                    <button type="button" class="action-button secondary modal-close">취소</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html> 
