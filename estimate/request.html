@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>견적 요청 - HowContent Admin</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/estimate.css">
+    <script src="/js/main.js" defer></script>
+    <script src="/js/estimate.js" defer></script>
+</head>
+<body>
+    <header class="main-header">
+        <nav class="nav-container">
+            <div class="logo">
+                <a href="/">HowContent Admin</a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="/">홈</a></li>
+                <li><a href="/login.html">로그인</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="estimate-container">
+        <section class="estimate-form-section">
+            <h1>견적 요청</h1>
+            <p class="form-description">아래 양식을 작성하시면 24시간 이내에 견적을 보내드립니다.</p>
+            
+            <form id="estimateForm" class="estimate-form" action="/includes/process-estimate.php" method="POST">
+                <div class="form-group">
+                    <label for="workType">작업 종류</label>
+                    <select id="workType" name="workType" required>
+                        <option value="">선택해주세요</option>
+                        <option value="product_registration">상품 등록</option>
+                        <option value="detail_page">상세 페이지 제작</option>
+                        <option value="marketing">마케팅 운영</option>
+                        <option value="other">기타</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="budget">예산</label>
+                    <input type="number" id="budget" name="budget" placeholder="예산을 입력해주세요" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="needDesign">디자인 필요 여부</label>
+                    <div class="radio-group">
+                        <label>
+                            <input type="radio" name="needDesign" value="yes" required>
+                            예
+                        </label>
+                        <label>
+                            <input type="radio" name="needDesign" value="no">
+                            아니오
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="reference">참고자료</label>
+                    <textarea id="reference" name="reference" placeholder="참고하실 사이트나 자료를 입력해주세요"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="deadline">마감일</label>
+                    <input type="date" id="deadline" name="deadline" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="requirements">기타 요청사항</label>
+                    <textarea id="requirements" name="requirements" placeholder="추가로 요청하실 내용을 입력해주세요"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="name">이름</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">이메일</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">연락처</label>
+                    <input type="tel" id="phone" name="phone" pattern="[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}" placeholder="예: 010-1234-5678" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="company">회사명</label>
+                    <input type="text" id="company" name="company">
+                </div>
+
+                <div class="form-group privacy-agreement">
+                    <label>
+                        <input type="checkbox" name="privacy" required>
+                        개인정보 수집 및 이용에 동의합니다.
+                    </label>
+                    <button type="button" class="privacy-detail-btn">자세히 보기</button>
+                </div>
+
+                <button type="submit" class="submit-button">견적 요청하기</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-info">
+                <h3>HowContent Admin</h3>
+                <p>사업자등록번호: 123-45-67890</p>
+                <p>연락처: 02-1234-5678</p>
+                <p>이메일: contact@howcontent.com</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 개인정보 처리방침 모달 -->
+    <div id="privacyModal" class="modal">
+        <div class="modal-content">
+            <h2>개인정보 처리방침</h2>
+            <div class="modal-body">
+                <p>1. 수집하는 개인정보 항목</p>
+                <ul>
+                    <li>필수항목: 이름, 이메일, 연락처</li>
+                    <li>선택항목: 회사명</li>
+                </ul>
+                <p>2. 개인정보의 수집 및 이용목적</p>
+                <ul>
+                    <li>견적 요청에 대한 상담 및 견적서 발송</li>
+                    <li>서비스 이용에 따른 본인확인, 연락처 확보</li>
+                </ul>
+                <p>3. 개인정보의 보유 및 이용기간</p>
+                <ul>
+                    <li>견적 요청일로부터 1년</li>
+                    <li>이후 즉시 파기</li>
+                </ul>
+            </div>
+            <button class="modal-close">닫기</button>
+        </div>
+    </div>
+</body>
+</html> 

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>작업 관리 - HowContent Admin</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/admin.css">
+    <script src="/js/main.js" defer></script>
+    <script src="/js/admin.js" defer></script>
+    <script src="/js/admin/tasks.js" defer></script>
+</head>
+<body class="admin-body">
+    <aside class="admin-sidebar">
+        <div class="sidebar-header">
+            <h1>HowContent Admin</h1>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li>
+                    <a href="/admin/">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                        </svg>
+                        대시보드
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/estimates.html">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                        </svg>
+                        견적 관리
+                        <span class="badge" id="estimateCount">0</span>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="/admin/tasks.html">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        작업 관리
+                        <span class="badge" id="taskCount">0</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/clients.html">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                        고객 관리
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/staff.html">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                        팀원 관리
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/settings.html">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                            <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        설정
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="admin-main">
+        <header class="admin-header">
+            <div class="header-search">
+                <input type="text" placeholder="작업 검색..." id="searchInput">
+            </div>
+            <div class="header-actions">
+                <button class="notification-btn" id="notificationBtn">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                    </svg>
+                    <span class="badge" id="notificationCount">0</span>
+                </button>
+                <div class="user-menu">
+                    <button class="user-menu-btn" id="userMenuBtn">
+                        <span id="userName">관리자</span>
+                        <svg viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                    <div class="user-menu-dropdown" id="userMenuDropdown">
+                        <a href="/admin/profile.html">프로필 설정</a>
+                        <a href="#" id="logoutBtn">로그아웃</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="admin-content">
+            <div class="content-header">
+                <h1>작업 관리</h1>
+                <button class="primary-button" id="createTaskBtn">
+                    <svg viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                        <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path>
+                    </svg>
+                    작업 생성
+                </button>
+            </div>
+
+            <div class="filter-section">
+                <div class="filter-group">
+                    <label for="statusFilter">상태</label>
+                    <select id="statusFilter">
+                        <option value="">전체</option>
+                        <option value="pending">대기중</option>
+                        <option value="in_progress">진행중</option>
+                        <option value="review">검토중</option>
+                        <option value="completed">완료</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="assigneeFilter">담당자</label>
+                    <select id="assigneeFilter">
+                        <option value="">전체</option>
+                        <!-- 동적으로 추가됨 -->
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="dateFilter">기간</label>
+                    <select id="dateFilter">
+                        <option value="all">전체 기간</option>
+                        <option value="today">오늘</option>
+                        <option value="week">이번 주</option>
+                        <option value="month">이번 달</option>
+                        <option value="overdue">마감 지연</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="kanban-board" id="kanbanBoard">
+                <div class="kanban-column" data-status="pending">
+                    <div class="column-header">
+                        <h2>대기중</h2>
+                        <span class="task-count">0</span>
+                    </div>
+                    <div class="task-list">
+                        <!-- 동적으로 추가됨 -->
+                    </div>
+                </div>
+
+                <div class="kanban-column" data-status="in_progress">
+                    <div class="column-header">
+                        <h2>진행중</h2>
+                        <span class="task-count">0</span>
+                    </div>
+                    <div class="task-list">
+                        <!-- 동적으로 추가됨 -->
+                    </div>
+                </div>
+
+                <div class="kanban-column" data-status="review">
+                    <div class="column-header">
+                        <h2>검토중</h2>
+                        <span class="task-count">0</span>
+                    </div>
+                    <div class="task-list">
+                        <!-- 동적으로 추가됨 -->
+                    </div>
+                </div>
+
+                <div class="kanban-column" data-status="completed">
+                    <div class="column-header">
+                        <h2>완료</h2>
+                        <span class="task-count">0</span>
+                    </div>
+                    <div class="task-list">
+                        <!-- 동적으로 추가됨 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 작업 생성/수정 모달 -->
+    <div id="taskModal" class="modal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h2 id="modalTitle">작업 생성</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="taskForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="taskTitle">작업명</label>
+                        <input type="text" id="taskTitle" name="taskTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="assignedTo">담당자</label>
+                        <select id="assignedTo" name="assignedTo" required>
+                            <option value="">선택해주세요</option>
+                            <!-- 동적으로 추가됨 -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="startDate">시작일</label>
+                        <input type="date" id="startDate" name="startDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="endDate">마감일</label>
+                        <input type="date" id="endDate" name="endDate" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="description">작업 설명</label>
+                    <textarea id="description" name="description" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="aiSummary">AI 요약</label>
+                    <div class="ai-suggestion-wrapper">
+                        <textarea id="aiSummary" name="aiSummary" rows="3" readonly></textarea>
+                        <button type="button" class="secondary-button" id="generateAiBtn">
+                            <svg viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                                <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"></path>
+                            </svg>
+                            AI 요약 생성
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="status">상태</label>
+                    <select id="status" name="status" required>
+                        <option value="pending">대기중</option>
+                        <option value="in_progress">진행중</option>
+                        <option value="review">검토중</option>
+                        <option value="completed">완료</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="primary-button">저장</button>
+                    <button type="button" class="secondary-button modal-close">취소</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 작업 상세 모달 -->
+    <div id="taskDetailModal" class="modal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h2>작업 상세</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="task-detail">
+                <div class="task-info">
+                    <h3 id="detailTaskTitle"></h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <label>담당자</label>
+                            <p id="detailAssignedTo"></p>
+                        </div>
+                        <div class="info-item">
+                            <label>시작일</label>
+                            <p id="detailStartDate"></p>
+                        </div>
+                        <div class="info-item">
+                            <label>마감일</label>
+                            <p id="detailEndDate"></p>
+                        </div>
+                        <div class="info-item">
+                            <label>상태</label>
+                            <p id="detailStatus"></p>
+                        </div>
+                    </div>
+                    <div class="description">
+                        <label>작업 설명</label>
+                        <p id="detailDescription"></p>
+                    </div>
+                </div>
+                <div class="task-comments">
+                    <h3>댓글</h3>
+                    <div class="comment-list" id="commentList">
+                        <!-- 동적으로 추가됨 -->
+                    </div>
+                    <form id="commentForm" class="comment-form">
+                        <textarea id="commentText" name="commentText" rows="3" placeholder="댓글을 입력하세요..." required></textarea>
+                        <button type="submit" class="primary-button">댓글 작성</button>
+                    </form>
+                </div>
+                <div class="task-history">
+                    <h3>작업 이력</h3>
+                    <div class="history-list" id="historyList">
+                        <!-- 동적으로 추가됨 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 
