@@ -1,10 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  purge: [
+  content: [
     './**/*.html',
     './**/*.js',
   ],
-  darkMode: false,
   theme: {
     extend: {
       colors: {
@@ -31,13 +30,6 @@ module.exports = {
           '2xl': '6rem',
         },
       },
-    },
-  },
-  variants: {
-    extend: {
-      opacity: ['disabled'],
-      cursor: ['disabled'],
-      backgroundColor: ['active'],
     },
   },
   plugins: [],
